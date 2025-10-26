@@ -1,0 +1,18 @@
+{
+  "database": {
+    "path": null
+  },
+  "matching": {
+    "use_unique_id": true,
+    "fuzzy_name_threshold": 0.8,
+    "prefer_newer_version": false
+  },
+  "safety": {
+    "dry_run": true,
+    "create_backup": true,
+    "backup_suffix": ".bkp"
+  },
+  "output": {
+    "log_file": "apf.log"
+  }
+}

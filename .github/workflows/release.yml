@@ -1,0 +1,59 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+      - '*.*.*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get previous tag
+        id: previous_tag
+        run: |
+          CURRENT_TAG="${{ github.ref_name }}"
+          PREVIOUS_TAG=$(git tag --sort=-version:refname | grep -v "^${CURRENT_TAG}$" | head -n1)
+          echo "previous_tag=$PREVIOUS_TAG" >> $GITHUB_OUTPUT
+
+      - name: Extract changelog notes
+        id: changelog
+        run: |
+          if [ -f docs/changelog.md ]; then
+            VERSION="${{ github.ref_name }}"
+            CHANGELOG_NOTES=$(awk "/^# \[${VERSION}\]/{flag=1;next}/^# \[/{flag=0}flag" docs/changelog.md | sed '/^$/d' | sed 's/^- /• /' || echo "")
+            
+            echo "changelog_notes<<EOF" >> $GITHUB_OUTPUT
+            echo "$CHANGELOG_NOTES" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          else
+            echo "changelog_notes=No changelog found" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create zip file
+        run: |
+          if [ ! -f apf.py ] || [ ! -f config.json ] || [ ! -f README.md ]; then
+            echo "Error: Required files or directories missing" >&2
+            exit 1
+          fi
+          zip -r Ableton_Plugin_Fixer_${{ github.ref_name }}.zip apf.py config.json README.md
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: Ableton_Plugin_Fixer_${{ github.ref_name }}.zip
+          tag_name: ${{ github.ref_name }}
+          name: Ableton Plugin Fixer ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+          body: |
+            ${{ steps.changelog.outputs.changelog_notes }}
+            
+            
+            ${{ steps.previous_tag.outputs.previous_tag != '' && steps.previous_tag.outputs.previous_tag != github.ref_name && format('**Full Changelog**: https://github.com/{0}/compare/{1}...{2}', github.repository, steps.previous_tag.outputs.previous_tag, github.ref_name) || '' }}
