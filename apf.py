@@ -7,7 +7,6 @@ with available VST3 equivalents, preserving all parameter data.
 """
 
 import gzip
-import hashlib
 import json
 import os
 import re
@@ -119,11 +118,17 @@ class PluginScanner:
         if db_path:
             return db_path if os.path.exists(db_path) else None
         
-        # fallback to default paths based on OS
         db_paths = {
-            'nt': os.path.expandvars(r"%LOCALAPPDATA%\Ableton\Live Database\Live-plugins-1.db")
+            'nt': os.path.expandvars(r"%LOCALAPPDATA%\Ableton\Live Database\Live-plugins-1.db"),
+            'posix': os.path.expanduser("~/Library/Application Support/Ableton/Live Database/Live-plugins-1.db")
         }
-        return db_paths.get(os.name) if os.name in db_paths and os.path.exists(db_paths[os.name]) else None
+        
+        if os.name == 'posix' and os.path.exists(db_paths['posix']):
+            return db_paths['posix']
+        elif os.name == 'nt' and os.path.exists(db_paths['nt']):
+            return db_paths['nt']
+        
+        return None
     
     def _load_plugins_from_database(self):
         """
@@ -294,7 +299,7 @@ class ProjectAnalyzer(XmlProcessor):
         if elems['name'] is None:
             return None
         
-        # VST3 UID will be extracted from binary
+        # VST3 plugins use empty unique_id
         unique_id = ""
         
         # create plugin object
@@ -464,7 +469,7 @@ class PluginReplacer(XmlProcessor):
             sub_elem = ET.SubElement(parent, name)
             sub_elem.set('Value', val)
     
-    def start_logging(self, log_file: str = 'fixed_plugins.log'):
+    def start_logging(self, log_file: str = 'apf.log'):
         """
         Start logging session to a file.
         """
@@ -644,7 +649,6 @@ class PluginReplacer(XmlProcessor):
         # add plugin name element (outside preset)
         self._create_element_with_value(vst3_info, 'Name', replacement.name)
         # add UID element outside preset
-        # i think this is where the problem is
         self._add_vst3_uid(vst3_info, replacement)
         preset_uid_elem = vst3_preset.find('Uid')
         if preset_uid_elem is not None:
@@ -768,7 +772,7 @@ class PluginReplacer(XmlProcessor):
         # remove dashes from UUID string
         uuid_clean = uuid_str.replace("-", "")
         
-        # ssplit into four 32-bit chunks
+        # split into four 32-bit chunks
         chunks = [uuid_clean[i:i+8] for i in range(0, 32, 8)]
         
         # convert each chunk to a signed 32-bit integer
@@ -837,7 +841,6 @@ class PluginReplacer(XmlProcessor):
             with open(self.project_path, 'w', encoding='utf-8') as f:
                 f.write(final_content)
 
-# load_config function
 def load_config() -> Dict[str, Any]:
     """
     Load configuration from config.json file with fallback defaults.
@@ -862,7 +865,7 @@ def load_config() -> Dict[str, Any]:
         }
     }
     
-    # Try to load config.json; if missing, create one with defaults
+    # try to load config.json; if missing, create one with defaults
     cfg_path = Path(__file__).with_name('config.json')
     try:
         if cfg_path.exists():
@@ -912,18 +915,21 @@ def main():
     if len(sys.argv) > 1:
         # handle paths with spaces
         project_file = ' '.join(sys.argv[1:])
-        
-        # remove quotes if the entire path is quoted
-        if len(project_file) >= 2:
-            if project_file.startswith('"') and project_file.endswith('"'):
-                project_file = project_file[1:-1]
-            elif project_file.startswith("'") and project_file.endswith("'"):
-                project_file = project_file[1:-1]
     else:
         project_file = input("Enter path to Live project file: ").strip()
         if not project_file:
             print("You must provide a valid path\n")
             return
+    
+    # remove surrounding quotes if present
+    if len(project_file) >= 2:
+        if (project_file.startswith('"') and project_file.endswith('"')) or \
+           (project_file.startswith("'") and project_file.endswith("'")):
+            project_file = project_file[1:-1]
+    
+    # :shrug:
+    if os.name != 'nt':
+        project_file = project_file.replace('\\', '')
     
     # check if path exists
     if not os.path.exists(project_file):
@@ -973,6 +979,10 @@ def main():
         # start logging
         replacer.start_logging(log_file)
         print(f"\nLogging to {log_file}")
+        
+        # notify if dry run is enabled
+        if dry_run_flag:
+            print("\nDry Run mode enabled - changes will not be applied to project files")
         
         # replace the plugins
         for i, (project_plugin, potential_replacements) in enumerate(matches):

@@ -20,8 +20,8 @@
 ## Installation
 
 1. **Requirements**
-   - Python 3.7 or higher
-   - Windows 10 or higher
+   - Python 3.7+
+   - macOS or Windows 10+
    - Ableton Live
 
 2. **Download**
@@ -66,7 +66,7 @@ Some plugins may have different parameter layouts across versions, so presets mi
 
 ## TODO
 
-- [ ]  Add macOS support -- WIP
+- [x]  Add macOS support
 - [ ]  Support VST3 plugin updates (e.g., Kontakt 7 → Kontakt 8)
 - [ ]  Fix .als extension in the root element
 - [ ]  Integrate Live's PluginScanner to refresh database before processing project files
