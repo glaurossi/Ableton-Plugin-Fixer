@@ -1,0 +1,83 @@
+name: Bug Report
+description: File a bug report here
+title: "[BUG]: "
+labels: ["bug"]
+assignees: ["glaurossi"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        *Thanks for taking the time to fill out this bug report.*
+
+        > [!IMPORTANT]
+        > - Provide descriptive titles.
+        > - Search existing issues to avoid duplicates.
+        > - Fill out the template below to the best of your ability.
+        > - Describe the issue as much as possible and provide steps to reproduce it along with visual aids if possible.
+  
+  - type: checkboxes
+    id: captchas
+    attributes:
+      label: Preliminary Checks
+      description: Please confirm these before submitting a bug report.
+      options:
+        - label: I have read and understood the important section above
+          required: true
+        - label: I have searched existing issues and avoided creating duplicates
+          required: true
+        - label: I am not filing an improvement request
+          required: true
+  
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Which platform are you on?
+      options:
+        - macOS Apple Silicon
+        - macOS Intel
+        - Windows arm64
+        - Windows x64
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Describe the bug as clearly as possible.
+    validations:
+      required: true
+  
+  - type: input
+    id: expected-behavior
+    attributes:
+      label: Expected behavior
+      description: Write a description of what was supposed to happen.
+    validations:
+      required: true
+  
+  - type: textarea
+    id: how-to-reproduce
+    attributes:
+      label: Steps to reproduce
+      description: Provide steps to reproduce the issue.
+    validations:
+      required: true
+  
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots and videos
+      description: |
+        If applicable, add screenshots or videos to help explain the issue.
+    validations:
+      required: false
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log output if applicable
+      description: Copy and paste any relevant log output.
+      render: shell
+    validations:
+      required: false

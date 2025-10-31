@@ -1,0 +1,6 @@
+blank_issues_enabled: false
+
+contact_links:
+  - name: Question or Discussion
+    url: https://github.com/glaurossi/Ableton-Plugin-Fixer/discussions
+    about: Not a bug or feature request? Head over to Discussions for help, ideas, or general questions.

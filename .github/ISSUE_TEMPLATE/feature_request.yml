@@ -1,0 +1,36 @@
+name: Feature Request
+description: Request a new feature or enhancement
+labels: ["enhancement"]
+title: "[FEAT]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please make sure this feature request hasn't been already submitted by looking through other open/closed issues
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Description of the feature or improvement you would like to see
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional-information
+    attributes:
+      label: Additional Information
+      description: If you have any additional info, feel free to do so here
+    validations:
+      required: false
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: How important is it?
+      options:
+        - It's a cool feature
+        - I think everyone would love this
+        - Just do it already
+    validations:
+      required: true
