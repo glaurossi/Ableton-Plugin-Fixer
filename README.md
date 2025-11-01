@@ -69,6 +69,10 @@ Some plugins may have different parameter layouts across versions, so presets mi
 - [x]  Add macOS support
 - [ ]  Support VST3 plugin updates (e.g., Kontakt 7 → Kontakt 8)
 - [ ]  Fix .als extension in the root element
+- [ ]  Implement multi-level debug
+    - Debug 1 (Minimal): Current behavior; essential logs only.
+    - Debug 2 (Advanced): Debug 1 + logs of every change applied to project files.
+    - Debug 3 (Nerdy): Debug 1 + Debug 2 + everything else.
 - [ ]  Integrate Live's PluginScanner to refresh database before processing project files
 
 ## Contributions
