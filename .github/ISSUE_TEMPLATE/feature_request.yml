@@ -29,8 +29,8 @@ body:
     attributes:
       label: How important is it?
       options:
-        - It's a cool feature
-        - I think everyone would love this
-        - Just do it already
+        - Nice to have
+        - Would make many users happy
+        - Critical - please prioritize!
     validations:
       required: true

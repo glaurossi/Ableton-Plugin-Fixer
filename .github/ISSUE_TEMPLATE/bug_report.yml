@@ -76,8 +76,8 @@ body:
   - type: textarea
     id: logs
     attributes:
-      label: Relevant log output if applicable
-      description: Copy and paste any relevant log output.
+      label: Log output
+      description: Copy and paste any relevant log output here.
       render: shell
     validations:
       required: false
