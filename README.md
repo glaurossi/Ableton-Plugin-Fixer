@@ -34,13 +34,17 @@
    - Or download the files [here](https://github.com/glaurossi/Ableton-Plugin-Fixer/releases)
 
 3. **Usage**
-   ```bash
-   py apf.py
-   ```
-   or
-   ```bash
-   python apf.py project.als
-   ```
+   - Open your project in the latest version of Ableton Live installed on your system
+   - Save a Copy
+   - Run the saved copy through `apf.py`:
+
+      ```bash
+      py apf.py
+      ```
+      or
+      ```bash
+      python apf.py project.als
+      ```
 
 <h2 align="left">Showcase</h2>
 <div align="center">
@@ -59,6 +63,7 @@ The tool uses a `config.json` to control some of its behavior.
 | `dry_run`                | Preview changes without modifying files                   | true    |
 | `create_backup`          | Automatically backup projects before changes              | true    |
 | `backup_suffix`          | File extension for backups (e.g., ".bkp", ".backup").     | .bkp    |
+| `debug_level`            | Log verbosity: 1 (minimal) to 3 (everything)              | 1       |
 | `log_file`               | Where to save the logs.                                   | apf.log |
 
 ## Limitations
@@ -69,7 +74,7 @@ Some plugins may have different parameter layouts across versions, so presets mi
 - [x]  Add macOS support
 - [ ]  Support VST3 plugin updates (e.g., Kontakt 7 → Kontakt 8)
 - [ ]  Fix .als extension in the root element
-- [ ]  Implement multi-level debug
+- [x]  Implement multi-level debug
     - Debug 1 (Minimal): Current behavior; essential logs only.
     - Debug 2 (Advanced): Debug 1 + logs of every change applied to project files.
     - Debug 3 (Nerdy): Debug 1 + Debug 2 + everything else.
