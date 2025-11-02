@@ -6,7 +6,9 @@
 ###
 
 ## What is Ableton Plugin Fixer?
-**Ableton Plugin Fixer (APF)** is a tool designed for Ableton Live users, tackling the frustration of missing VST2 plugins by replacing them with their VST3 equivalents, preventing broken sessions and ensuring compatibility.
+**Ableton Plugin Fixer (APF)** is a tool designed to help users replace VST2 plugins with their VST3 equivalents in Ableton Live projects. This is particularly useful for those who encounter missing plugins when opening older projects after updating to newer versions.
+
+Many users have expressed frustration with Ableton's plugin management system, noting that it can be inefficient compared to other DAWs. APF addresses some of these concerns by providing a straightforward solution for plugin replacement.
 
 ### Key features
 
