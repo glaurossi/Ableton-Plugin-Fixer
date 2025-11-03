@@ -89,6 +89,13 @@ Any improvements, bug fixes, or feature additions are welcome. Feel free to do s
 
 Found a bug or have a feature request? [Open an issue](https://github.com/glaurossi/Ableton-Plugin-Fixer/issues).
 
+<h2 align="left">Star History</h2>
+<p align="center">
+  <a href="https://www.star-history.com/#glaurossi/Ableton-Plugin-Fixer">
+    <img src="https://api.star-history.com/svg?repos=glaurossi/Ableton-Plugin-Fixer" alt="Star History Chart" width="800">
+  </a>
+</p>
+
 ## License
 
 MIT License - see [LICENSE](LICENSE) file for details.
