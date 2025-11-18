@@ -238,7 +238,7 @@ class PluginScanner:
 
         db_paths = {
             "nt": os.path.expandvars(
-                r"%LOCALAPPDATA%\Ableton\Live Database\Live-plugins-1.db"
+                "%LOCALAPPDATA%\\Ableton\\Live Database"
             ),
             "posix": os.path.expanduser(
                 "~/Library/Application Support/Ableton/Live Database/Live-plugins-1.db"
@@ -248,7 +248,9 @@ class PluginScanner:
         if os.name == "posix" and os.path.exists(db_paths["posix"]):
             return db_paths["posix"]
         elif os.name == "nt" and os.path.exists(db_paths["nt"]):
-            return db_paths["nt"]
+            db_filename = next(Path(db_paths["nt"]).glob("*.db"), None)
+            if (db_filename != None):
+                return os.path.join(db_paths["nt"], db_filename)
 
         return None
 
@@ -1618,3 +1620,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    input("Please enter something: ")
